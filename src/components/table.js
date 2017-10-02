@@ -3,11 +3,10 @@ import Cell from './cell';
 
 class Table extends Component {
 
+  // FIXME: no pude hacerlo andar
   displayRows = (row)=> {
 
     row.map((cell, index) => {
-      console.log('cell:', cell);
-
       return (
         <td className="Cell">
           <Cell data={cell} />
@@ -17,7 +16,7 @@ class Table extends Component {
   }
 
 
-  displayTable = (table)=> {
+  displayTable = (table) => {
 
     table.map( (row, index) => {
 
@@ -29,21 +28,30 @@ class Table extends Component {
     });
   }
 
-
   render() {
     var table = this.props.table;
-
-    if (!table) {
-      return (
-        <div>Loading...</div>
-      );
-    }
 
     return (
       <div>
         <table >
           <tbody>
-            {this.displayTable(table)}
+            {
+              table.map( (row, i) => {
+                return (
+                  <tr className="rows" key={i}>
+                    {
+                      row.map((cell, j) => {
+                        return (
+                          <td className="Cell" key={j}>
+                            <Cell data={cell} openCell={this.props.openCell}/>
+                          </td>
+                        );
+                     })
+                    }
+                  </tr>
+                );
+              }
+            )}
           </tbody>
         </table>
       </div>

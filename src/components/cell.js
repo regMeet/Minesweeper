@@ -2,43 +2,43 @@ import React, { Component } from 'react';
 
 class Cell extends Component {
 
-  render() {
-    console.log(this.props);
-
-    var data = this.props.data;
-    console.log(data)
-
-    if (data.isOpened){
+  renderCellStatus = (data) => {
+    if (data.isOpened) {
       if (data.hasMine) {
         return (
-          <div className="mine">
-            -1
+          <div className="Cell__cover Cell__cover--opened">
+            <span className="Cell__bomb">b</span>
           </div>
         );
-      }
-
-      if (data.hasFlag) {
+      } else {
         return (
-          <div className="flag">
-            -2
+          <div className="Cell__cover Cell__cover--opened">
+            <span className={"Cell__number"+this.props.data.count}>{this.props.data.count}</span>
           </div>
         );
       }
-
+    }else if (data.hasFlag) {
       return (
-        <div className="Cell">
-          {this.props.data.count}
+        <div className="Cell__cover Cell__cover--opened">
+          <span className="Cell__flag">f</span>
         </div>
       );
     } else {
       return (
-        <div className="cover">
-          -3
-        </div>
+        <div className="Cell__cover"></div>
       );
     }
   }
 
+  render() {
+    var data = this.props.data;
+
+    return (
+      <div className="Cell" onClick={() => this.props.openCell(data)} >
+        {this.renderCellStatus(data)}
+      </div>
+    );
+  }
 }
 
 export default Cell;

@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { createNewGame } from '../actions';
+import { createNewGame, openCell } from '../actions';
 
 import Table from './table';
+import TimerComponent from './timerComponent';
 
 class Minesweeper extends Component {
 
@@ -10,11 +11,24 @@ class Minesweeper extends Component {
     this.props.createNewGame();
   }
 
+  openCell = (data) => {
+    this.props.openCell(data);
+  }
+
   render() {
+    if (!this.props.table){
+      return (
+        <div>Loading...</div>
+      );
+    }
+
     return (
       <div>
         Minesweeper
-        <Table table={this.props.table} />
+
+        <TimerComponent status={this.props.status}/>
+        <Table table={this.props.table} openCell={this.openCell} />
+        {this.props.status}
       </div>
 
     );
@@ -22,10 +36,12 @@ class Minesweeper extends Component {
 }
 
 function mapStateToProps(state) {
+
   return {
-    table: state.table.data
+    table: state.table.board,
+    status: state.table.status
   }
 }
 
 
-export default connect(mapStateToProps, { createNewGame })(Minesweeper);
+export default connect(mapStateToProps, { createNewGame, openCell })(Minesweeper);
