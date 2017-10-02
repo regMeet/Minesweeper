@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { createNewGame, openCell, setLevel } from '../actions';
+import { createNewGame, openCell, setLevel, openHelpModal, closeHelpModal } from '../actions';
 import {LEVEL_EASY, LEVEL_NORMAL, LEVEL_HARD} from '../actions';
 import Table from './table';
 import TimerComponent from './timerComponent';
+import HelpModal from './helpModal';
 
 class Minesweeper extends Component {
 
@@ -58,9 +59,16 @@ class Minesweeper extends Component {
           <span className="MineSweeper__time">
             <TimerComponent status={this.props.status}/>
           </span>
+
           <Table table={this.props.table} openCell={this.openCell} />
         </div>
-        {this.props.status}
+
+        <button onClick={() => this.props.openHelpModal()}>
+          Help: How to play?
+        </button>
+
+        <HelpModal isHelpModalOpen={this.props.isHelpModalOpen} onClose={ () => this.props.closeHelpModal() } />
+
       </div>
 
     );
@@ -71,10 +79,11 @@ function mapStateToProps(state) {
 
   return {
     level: state.game.level,
+    isHelpModalOpen: state.game.isHelpModalOpen,
     table: state.table.board,
     status: state.table.status
   }
 }
 
 
-export default connect(mapStateToProps, { createNewGame, openCell, setLevel })(Minesweeper);
+export default connect(mapStateToProps, { createNewGame, openCell, setLevel, openHelpModal, closeHelpModal })(Minesweeper);

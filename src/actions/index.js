@@ -3,6 +3,8 @@
 export const CREATE_NEW_GAME = 'create_new_game';
 export const OPEN_CELL = 'open_cell';
 export const SET_LEVEL = 'set_level';
+export const OPEN_HELP_MODAL = 'open_help_modal';
+export const CLOSE_HELP_MODAL = 'close_help_modal';
 
 export const LEVEL_EASY = 'easy';
 export const LEVEL_NORMAL = 'normal';
@@ -39,5 +41,17 @@ export function setLevel(level) {
   return {
     type: SET_LEVEL,
     level
+  };
+}
+
+export function openHelpModal(){
+  return {
+    type: OPEN_HELP_MODAL
+  };
+}
+
+export function closeHelpModal(){
+  return {
+    type: CLOSE_HELP_MODAL
   };
 }

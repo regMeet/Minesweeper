@@ -202,3 +202,30 @@ embed {
     overflow: hidden;
     display: block;
     height: 100%; }
+
+.ReactModal__Overlay {
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.help-modal {
+    word-break: normal;
+    text-align: justify;
+}
+
+.help-modal ul {
+    margin: 15px 0;
+}
+
+.help-modal ul li {
+    list-style: square;
+    list-style-position: inside;
+}
+
+.help-modal button.close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: slateblue;
+}
