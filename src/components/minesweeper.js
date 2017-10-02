@@ -14,16 +14,16 @@ class Minesweeper extends Component {
 
   openCell = (data) => {
     this.props.openCell(data);
-  }
+  };
 
   setLevel = (level) => {
     this.props.setLevel(level);
     this.props.createNewGame(level);
-  }
+  };
 
   restartLevel = () => {
     this.props.createNewGame(this.props.level);
-  }
+  };
 
   displayRadioLevel = (level, checked) => {
     return (
@@ -32,7 +32,7 @@ class Minesweeper extends Component {
         {level}
       </label>
     );
-  }
+  };
 
   render() {
     if (!this.props.table){

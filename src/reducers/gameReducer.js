@@ -4,7 +4,7 @@ import {LEVEL_EASY} from '../actions';
 
 const INITIAL_STATE = {
   level: LEVEL_EASY,
-  isHelpModalOpen: true
+  isHelpModalOpen: false
 };
 
 export default function (state = INITIAL_STATE, action) {

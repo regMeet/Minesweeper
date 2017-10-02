@@ -22,8 +22,7 @@ function createCell(col, row){
     y : row,
     count : 0,
     isOpened: false,
-    hasMine: false,
-    hasFlag: false
+    hasMine: false
   }
 }
 
@@ -41,6 +40,13 @@ function createTable(rows, columns) {
   return table;
 }
 
+/**
+ * Precalculates what is the counter variable for each cell at the beginning.
+ * @param table
+ * @param rowNumber
+ * @param colNumber
+ * @param mine
+ */
 function countMines(table, rowNumber, colNumber, mine) {
   var row = mine.y;
   var col = mine.x;
@@ -60,6 +66,13 @@ function countMines(table, rowNumber, colNumber, mine) {
   }
 }
 
+/**
+ * Inserts the mines into the board and then updates its surrounding cell counters.
+ * @param table
+ * @param rows
+ * @param cols
+ * @param mineNumber
+ */
 function insertMines(table, rows, cols, mineNumber) {
   let totalCellNumber = rows * cols;
 
@@ -78,6 +91,12 @@ function insertMines(table, rows, cols, mineNumber) {
   }
 }
 
+/**
+ * Opens a cell and if the cell is not a mine and it's counter is zero it will explore its surrounding cells.
+ * @param state
+ * @param cell
+ * @returns {*}
+ */
 function updateStateOpeningCell(state, cell) {
   if (!cell.isOpened) {
     state = openCell(state, cell);
@@ -111,8 +130,16 @@ function updateStateOpeningCell(state, cell) {
   return state;
 }
 
+/**
+ * Updates the status from a cell, opening it. Also does a +1 to the global hit counter in order to know if the game is already won.
+ *
+ * @param state
+ * @param cell
+ * @returns {{board}}
+ */
 function openCell(state, cell) {
-  return {...state, board: state.board.map(row =>
+  return {...state,
+    board: state.board.map(row =>
     row.map(col => (col.x === cell.x) && (col.y === cell.y)?
       // transform the one with a matching id
       {...col, isOpened: true, hit: state.hit++}:
@@ -122,30 +149,12 @@ function openCell(state, cell) {
   )};
 }
 
-// FIXME: no pude hacerlo andar
-function openCell2(board, cell) {
-
-  var board = { ...board,
-    [cell.y]:{
-      ...board[cell.y],
-      [cell.x]:{
-        ...board[cell.y][cell.x],
-        isOpened: true
-      }
-    }
-  };
-  // se cambia a un objeto en vez de array
-  console.log('complete state:', board);
-
-  return board;
-}
-
 export default function (state = INITIAL_STATE, action) {
   switch (action.type){
     case CREATE_NEW_GAME:
-      var mines = action.payload.mines;
-      var rows = action.payload.rows;
-      var cols = action.payload.cols;
+      let mines = action.payload.mines;
+      let rows = action.payload.rows;
+      let cols = action.payload.cols;
 
       const newTable = createTable(rows, cols);
       insertMines(newTable, rows, cols, mines);
@@ -168,14 +177,17 @@ export default function (state = INITIAL_STATE, action) {
         var state = updateStateOpeningCell(state, cell);
 
         if (state.hit === state.total) {
-          return {...state, status: STATUS_WIN}
+          return {...state, status: STATUS_WIN};
         }
+
         if (cell.hasMine){
           return {...state, status: STATUS_GAME_OVER};
         }
-        return {...state, status: STATUS_PLAYING}
+
+        return {...state, status: STATUS_PLAYING};
       }
-      return {...state}
+
+      return {...state};
 
     default:
       return state;
