@@ -20,7 +20,7 @@ class Table extends Component {
       row.map((cell, j) => {
         return (
           <td className="Cell" key={j}>
-            <Cell data={cell} openCell={this.props.openCell}/>
+            <Cell data={cell} openCell={this.props.openCell} markFlag={this.props.markFlag}/>
           </td>
         );
       })

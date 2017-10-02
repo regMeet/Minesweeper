@@ -1,5 +1,5 @@
 
-import {CREATE_NEW_GAME, OPEN_CELL} from '../actions';
+import {CREATE_NEW_GAME, OPEN_CELL, MARK_FLAG} from '../actions';
 
 export const STATUS_INITIAL = 'initial';
 export const STATUS_PLAYING = 'playing';
@@ -13,7 +13,8 @@ const INITIAL_STATE = {
   cols: 0,
   mines: 0,
   hit: 0,
-  total: 0
+  total: 0,
+  flags: 0
 };
 
 function createCell(col, row){
@@ -22,7 +23,8 @@ function createCell(col, row){
     y : row,
     count : 0,
     isOpened: false,
-    hasMine: false
+    hasMine: false,
+    hasFlag: false
   }
 }
 
@@ -140,13 +142,26 @@ function updateStateOpeningCell(state, cell) {
 function openCell(state, cell) {
   return {...state,
     board: state.board.map(row =>
-    row.map(col => (col.x === cell.x) && (col.y === cell.y)?
-      // transform the one with a matching id
-      {...col, isOpened: true, hit: state.hit++}:
-      // otherwise return original cell
-      col
+      row.map(col => (col.x === cell.x) && (col.y === cell.y)?
+        // transform the one with a matching id
+        {...col, isOpened: true, hit: state.hit++, flags: (cell.hasFlag? state.flags++: state.flags)}:
+        // otherwise return original cell
+        col
+      )
     )
-  )};
+  };
+}
+
+function markFlag(state, cell) {
+  return {...state,
+    board: state.board.map(row =>
+      row.map(col => (col.x === cell.x) && (col.y === cell.y)?
+        // transform the one with a matching id
+        {...col, hasFlag: !cell.hasFlag}:
+        // otherwise return original cell
+        col
+      )
+    )};
 }
 
 export default function (state = INITIAL_STATE, action) {
@@ -168,6 +183,7 @@ export default function (state = INITIAL_STATE, action) {
         mines: mines,
         hit: 0,
         total: rows * cols - mines,
+        flags: mines
       };
 
     case OPEN_CELL:
@@ -185,6 +201,16 @@ export default function (state = INITIAL_STATE, action) {
         }
 
         return {...state, status: STATUS_PLAYING};
+      }
+
+      return {...state};
+
+    case MARK_FLAG:
+      if (state.status !== STATUS_WIN && state.status !== STATUS_GAME_OVER) {
+        var cell = action.data;
+        var state = markFlag(state, cell);
+
+        return {...state, flags: cell.hasFlag? state.flags + 1 : state.flags - 1 };
       }
 
       return {...state};

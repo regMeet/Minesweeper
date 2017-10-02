@@ -2,6 +2,7 @@
 
 export const CREATE_NEW_GAME = 'create_new_game';
 export const OPEN_CELL = 'open_cell';
+export const MARK_FLAG = 'create_flag';
 export const SET_LEVEL = 'set_level';
 export const OPEN_HELP_MODAL = 'open_help_modal';
 export const CLOSE_HELP_MODAL = 'close_help_modal';
@@ -33,6 +34,13 @@ export function createNewGame(level) {
 export function openCell(cell) {
   return {
     type: OPEN_CELL,
+    data: cell
+  };
+}
+
+export function markFlag(cell) {
+  return {
+    type: MARK_FLAG,
     data: cell
   };
 }

@@ -2,6 +2,13 @@ import React, { Component } from 'react';
 
 class Cell extends Component {
 
+  markFlag = (e, data) => {
+    e.preventDefault();
+    if(!data.isOpened){
+      this.props.markFlag(data)
+    }
+  }
+
   renderCellStatus = (data) => {
     if (data.isOpened) {
       if (data.hasMine) {
@@ -34,7 +41,7 @@ class Cell extends Component {
     var data = this.props.data;
 
     return (
-      <div className="Cell" onClick={() => this.props.openCell(data)} >
+      <div className="Cell" onClick={() => this.props.openCell(data)} onContextMenu={(e) => this.markFlag(e, data)} >
         {this.renderCellStatus(data)}
       </div>
     );
