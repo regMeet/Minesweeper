@@ -24,6 +24,15 @@ class Minesweeper extends Component {
     this.props.createNewGame(this.props.level);
   }
 
+  displayRadioLevel = (level, checked) => {
+    return (
+      <label>
+        <input type="radio" value={level} name="level" defaultChecked={checked} />
+        {level}
+      </label>
+    );
+  }
+
   render() {
     if (!this.props.table){
       return (
@@ -35,20 +44,22 @@ class Minesweeper extends Component {
       <div>
         Minesweeper
 
-        <div onChange={event => this.setLevel(event.target.value)}>
-          <input type="radio" value={LEVEL_EASY} name="level" defaultChecked /> easy
-          <input type="radio" value={LEVEL_NORMAL} name="level"/> normal
-          <input type="radio" value={LEVEL_HARD} name="level"/> hard
+        <div className={"MineSweeper " + this.props.level}>
+          <div className="MineSweeper__level" onChange={event => this.setLevel(event.target.value)}>
+            {this.displayRadioLevel(LEVEL_EASY, true)}
+            {this.displayRadioLevel(LEVEL_NORMAL)}
+            {this.displayRadioLevel(LEVEL_HARD)}
+          </div>
+
+          <span className="MineSweeper__face" onClick={() => this.restartLevel()}>
+              <span className={"button " + this.props.status}></span>
+          </span>
+
+          <span className="MineSweeper__time">
+            <TimerComponent status={this.props.status}/>
+          </span>
+          <Table table={this.props.table} openCell={this.openCell} />
         </div>
-
-        <span className="MineSweeper__face" onClick={() => this.restartLevel()}>
-            <span className={"button " + this.props.status}></span>
-        </span>
-
-        <span className="MineSweeper__time">
-          <TimerComponent status={this.props.status}/>
-        </span>
-        <Table table={this.props.table} openCell={this.openCell} />
         {this.props.status}
       </div>
 

@@ -106,11 +106,11 @@ embed {
     padding: 45px 10px 10px;
     margin: 0 auto; }
 .MineSweeper.easy {
-    width: 310px; }
+    width: 300px; }
 .MineSweeper.normal {
-    width: 490px; }
+    width: 520px; }
 .MineSweeper.hard {
-    width: 900px; }
+    width: 950px; }
 .MineSweeper__level {
     text-align: center;
     padding: 10px; }
@@ -144,9 +144,8 @@ embed {
     border-color: #fff #999 #999 #fff;
     height: 100%;
     display: block; }
-.MineSweeper__face .initial {
-    background: url("../images/icn_face_01.png") no-repeat center center, #ccc; }
-.MineSweeper__face .playing {
+.MineSweeper__face .initial,
+.MineSweeper__face .playing{
     background: url("../images/icn_face_01.png") no-repeat center center, #ccc; }
 .MineSweeper__face .win {
     background: url("../images/icn_face_02.png") no-repeat center center, #ccc; }

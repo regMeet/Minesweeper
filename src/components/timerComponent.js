@@ -16,7 +16,7 @@ class TimerComponent extends Component {
 
   componentWillReceiveProps(nextProps){
     // start playing
-    if (this.state.status === STATUS_INITIAL && nextProps.status !== STATUS_INITIAL){
+    if (this.state.status === STATUS_INITIAL && nextProps.status === STATUS_PLAYING){
       this.onStart();
     }
 
