@@ -144,9 +144,11 @@ embed {
     border-color: #fff #999 #999 #fff;
     height: 100%;
     display: block; }
+.MineSweeper__face .initial {
+    background: url("../images/icn_face_01.png") no-repeat center center, #ccc; }
 .MineSweeper__face .playing {
     background: url("../images/icn_face_01.png") no-repeat center center, #ccc; }
-.MineSweeper__face .clear {
+.MineSweeper__face .win {
     background: url("../images/icn_face_02.png") no-repeat center center, #ccc; }
 .MineSweeper__face .gameover {
     background: url("../images/icn_face_03.png") no-repeat center center, #ccc; }

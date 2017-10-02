@@ -15,9 +15,17 @@ class TimerComponent extends Component {
   }
 
   componentWillReceiveProps(nextProps){
+    // start playing
     if (this.state.status === STATUS_INITIAL && nextProps.status !== STATUS_INITIAL){
       this.onStart();
     }
+
+    // restart
+    if (this.state.status !== STATUS_INITIAL && nextProps.status === STATUS_INITIAL){
+      this.reset();
+    }
+
+    // gameover
     if (this.state.status === STATUS_PLAYING && nextProps.status !== STATUS_PLAYING){
       this.onStop();
     }
@@ -42,6 +50,12 @@ class TimerComponent extends Component {
 
   onStop = () => {
     clearInterval(this.state.timer);
+  }
+
+  reset = () => {
+    this.setState({
+      time: 0
+    })
   }
 
   render() {

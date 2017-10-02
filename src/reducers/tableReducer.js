@@ -4,16 +4,16 @@ import {CREATE_NEW_GAME, OPEN_CELL} from '../actions';
 export const STATUS_INITIAL = 'initial';
 export const STATUS_PLAYING = 'playing';
 export const STATUS_WIN = 'win';
-export const STATUS_LOSE = 'lose';
+export const STATUS_GAME_OVER = 'gameover';
 
 const INITIAL_STATE = {
-  rows: 9,
-  cols: 9,
-  mines: 9,
-  hit: 0,
-  total: -1,
+  status: STATUS_INITIAL,
   board: null,
-  status: STATUS_INITIAL
+  rows: 0,
+  cols: 0,
+  mines: 0,
+  hit: 0,
+  total: 0
 };
 
 function createCell(col, row){
@@ -41,7 +41,7 @@ function createTable(rows, columns) {
   return table;
 }
 
-function doCountMines(table, rowNumber, colNumber, mine) {
+function countMines(table, rowNumber, colNumber, mine) {
   var row = mine.y;
   var col = mine.x;
 
@@ -73,7 +73,7 @@ function insertMines(table, rows, cols, mineNumber) {
 
       cell.hasMine = true;
 
-      doCountMines(table, rows, cols, cell);
+      countMines(table, rows, cols, cell);
     }
   }
 }
@@ -134,6 +134,7 @@ function openCell2(board, cell) {
       }
     }
   };
+  // se cambia a un objeto en vez de array
   console.log('complete state:', board);
 
   return board;
@@ -142,13 +143,26 @@ function openCell2(board, cell) {
 export default function (state = INITIAL_STATE, action) {
   switch (action.type){
     case CREATE_NEW_GAME:
-      const newTable = createTable(state.rows, state.cols);
-      insertMines(newTable, state.rows, state.cols, state.mines);
+      var mines = action.payload.mines;
+      var rows = action.payload.rows;
+      var cols = action.payload.cols;
 
-      return {...state, board: newTable, total: state.rows*state.cols -state.mines};
+      const newTable = createTable(rows, cols);
+      insertMines(newTable, rows, cols, mines);
+
+      return {
+        ...state,
+        status: STATUS_INITIAL,
+        board: newTable,
+        rows: rows,
+        cols: cols,
+        mines: mines,
+        hit: 0,
+        total: rows * cols - mines,
+      };
 
     case OPEN_CELL:
-      if (state.status !== STATUS_WIN && state.status !== STATUS_LOSE) {
+      if (state.status !== STATUS_WIN && state.status !== STATUS_GAME_OVER) {
         var cell = action.data;
 
         var state = updateStateOpeningCell(state, cell);
@@ -157,7 +171,7 @@ export default function (state = INITIAL_STATE, action) {
           return {...state, status: STATUS_WIN}
         }
         if (cell.hasMine){
-          return {...state, status: STATUS_LOSE};
+          return {...state, status: STATUS_GAME_OVER};
         }
         return {...state, status: STATUS_PLAYING}
       }
